@@ -1,6 +1,4 @@
 import json
-import base64
-import csv
 
 misperrors = {'error': 'Error'}
 
