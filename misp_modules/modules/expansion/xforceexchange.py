@@ -14,7 +14,7 @@ extensions = {"ip1": "ipr/%s",
 sys.path.append('./')
 
 misperrors = {'error': 'Error'}
-mispattributes = {'input': ['ip-src','ip-dst' 'vulnerability', 'md5', 'sha1', 'sha256'], 
+mispattributes = {'input': ['ip-src','ip-dst' 'vulnerability', 'md5', 'sha1', 'sha256','domain'], 
 		  'output': ['ip-src', 'ip-dst', 'text', 'domain']}
 
 # possible module-types: 'expansion', 'hover' or both
@@ -83,7 +83,7 @@ def apicall(indicator_type, indicator, key=False):
 		if indicator_type is "hash":
 			if "malware" in jsondata:
 				lopointer = jsondata["malware"]
-				redata.append({"type": "text", "values": lopointer["risk"]})
+				redata.append({"type": "text", "values": indicator, "comment": "Risk: %s" %  lopointer["risk"]})
 		if indicator_type is "dns":
 			if "records" in str(jsondata):
 				lopointer = jsondata["Passive"]["records"]
