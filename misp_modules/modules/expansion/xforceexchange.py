@@ -83,7 +83,12 @@ def apicall(indicator_type, indicator, key=False):
 		if indicator_type is "hash":
 			if "malware" in jsondata:
 				lopointer = jsondata["malware"]
-				redata.append({"type": "text", "values": indicator, "comment": "Risk: %s" %  lopointer["risk"]})
+				lopointer = jsondata["malware"]
+				RiskLevel = lopointer["risk"]
+				MalFamily = ",".join(lopointer["origins"]["external"]["family"])
+				MalType = lopointer["type"]
+				redata.append({"type": "text", "values": indicator, "comment": "Risk: %s\n Family: %s\n Type:\n%s" %  (RiskLevel,MalFamily ,MalType)})
+
 		if indicator_type is "dns":
 			if "records" in str(jsondata):
 				lopointer = jsondata["Passive"]["records"]
