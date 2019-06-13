@@ -64,14 +64,14 @@ reportlab==3.5.21
 requests-cache==0.5.0
 requests==2.22.0
 shodan==1.13.0
-sigmatools==0.10
+sigmatools
 six==1.12.0
 soupsieve==1.9.1
 sparqlwrapper==1.8.4
 stix2-patterns==1.1.0
 tabulate==0.8.3
 tornado==6.0.2
-url-normalize==1.4.1
+url-normalize
 urlarchiver==0.2
 urllib3==1.25.3
 vulners==1.5.0
