@@ -2,6 +2,88 @@
 
 ## Expansion Modules
 
+#### [apiosintds](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/apiosintds.py)
+
+On demand query API for OSINT.digitalside.it project.
+- **features**:
+>The module simply queries the API of OSINT.digitalside.it with a domain, ip, url or hash attribute.
+>
+>The result of the query is then parsed to extract additional hashes or urls. A module parameters also allows to parse the hashes related to the urls.
+>
+>Furthermore, it is possible to cache the urls and hashes collected over the last 7 days by OSINT.digitalside.it
+- **input**:
+>A domain, ip, url or hash attribute.
+- **output**:
+>Hashes and urls resulting from the query to OSINT.digitalside.it
+- **references**:
+>https://osint.digitalside.it/#About
+- **requirements**:
+>The apiosintDS python library to query the OSINT.digitalside.it API.
+
+-----
+
+#### [apivoid](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/apivoid.py)
+
+<img src=logos/apivoid.png height=60>
+
+Module to query APIVoid with some domain attributes.
+- **features**:
+>This module takes a domain name and queries API Void to get the related DNS records and the SSL certificates. It returns then those pieces of data as MISP objects that can be added to the event.
+>
+>To make it work, a valid API key and enough credits to proceed 2 queries (0.06 + 0.07 credits) are required.
+- **input**:
+>A domain attribute.
+- **output**:
+>DNS records and SSL certificates related to the domain.
+- **references**:
+>https://www.apivoid.com/
+- **requirements**:
+>A valid APIVoid API key with enough credits to proceed 2 queries
+
+-----
+
+#### [assemblyline_query](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/assemblyline_query.py)
+
+<img src=logos/assemblyline.png height=60>
+
+A module tu query the AssemblyLine API with a submission ID to get the submission report and parse it.
+- **features**:
+>The module requires the address of the AssemblyLine server you want to query as well as your credentials used for this instance. Credentials include the used-ID and an API key or the password associated to the user-ID.
+>
+>The submission ID extracted from the submission link is then used to query AssemblyLine and get the full submission report. This report is parsed to extract file objects and the associated IPs, domains or URLs the files are connecting to.
+>
+>Some more data may be parsed in the future.
+- **input**:
+>Link of an AssemblyLine submission report.
+- **output**:
+>MISP attributes & objects parsed from the AssemblyLine submission.
+- **references**:
+>https://www.cyber.cg.ca/en/assemblyline
+- **requirements**:
+>assemblyline_client: Python library to query the AssemblyLine rest API.
+
+-----
+
+#### [assemblyline_submit](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/assemblyline_submit.py)
+
+<img src=logos/assemblyline.png height=60>
+
+A module to submit samples and URLs to AssemblyLine for advanced analysis, and return the link of the submission.
+- **features**:
+>The module requires the address of the AssemblyLine server you want to query as well as your credentials used for this instance. Credentials include the user-ID and an API key or the password associated to the user-ID.
+>
+>If the sample or url is correctly submitted, you get then the link of the submission.
+- **input**:
+>Sample, or url to submit to AssemblyLine.
+- **output**:
+>Link of the report generated in AssemblyLine.
+- **references**:
+>https://www.cyber.gc.ca/en/assemblyline
+- **requirements**:
+>assemblyline_client: Python library to query the AssemblyLine rest API.
+
+-----
+
 #### [backscatter_io](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/backscatter_io.py)
 
 <img src=logos/backscatter_io.png height=60>
@@ -70,19 +152,35 @@ An expansion hover module to get a blockchain balance from a BTC address in MISP
 
 -----
 
+#### [censys_enrich](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/censys_enrich.py)
+
+An expansion module to enrich attributes in MISP by quering the censys.io API
+- **features**:
+>This module takes an IP, hostname or a certificate fingerprint and attempts to enrich it by querying the Censys API.
+- **input**:
+>IP, domain or certificate fingerprint (md5, sha1 or sha256)
+- **output**:
+>MISP objects retrieved from censys, including open ports, ASN, Location of the IP, x509 details
+- **references**:
+>https://www.censys.io
+- **requirements**:
+>API credentials to censys.io
+
+-----
+
 #### [circl_passivedns](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/circl_passivedns.py)
 
 <img src=logos/passivedns.png height=60>
 
 Module to access CIRCL Passive DNS.
 - **features**:
->This module takes a hostname, domain or ip-address (ip-src or ip-dst) attribute as input, and queries the CIRCL Passive DNS REST API to get and display information about this input.
+>This module takes a hostname, domain or ip-address (ip-src or ip-dst) attribute as input, and queries the CIRCL Passive DNS REST API to get the asssociated passive dns entries and return them as MISP objects.
 >
 >To make it work a username and a password are thus required to authenticate to the CIRCL Passive DNS API.
 - **input**:
 >Hostname, domain, or ip-address attribute.
 - **ouput**:
->Text describing passive DNS information related to the input attribute.
+>Passive DNS objects related to the input attribute.
 - **references**:
 >https://www.circl.lu/services/passive-dns/, https://datatracker.ietf.org/doc/draft-dulaunoy-dnsop-passive-dns-cof/
 - **requirements**:
@@ -96,13 +194,13 @@ Module to access CIRCL Passive DNS.
 
 Modules to access CIRCL Passive SSL.
 - **features**:
->This module takes an ip-address (ip-src or ip-dst) attribute as input, and queries the CIRCL Passive SSL REST API to get and display information about this input.
+>This module takes an ip-address (ip-src or ip-dst) attribute as input, and queries the CIRCL Passive SSL REST API to gather the related certificates and return the corresponding MISP objects.
 >
->To make it work a username and a password are thus required to authenticate to the CIRCL Passive SSL API.
+>To make it work a username and a password are required to authenticate to the CIRCL Passive SSL API.
 - **input**:
->Ip-address attribute.
+>IP address attribute.
 - **output**:
->Text describing passive SSL information related to the input attribute.
+>x509 certificate objects seen by the IP address(es).
 - **references**:
 >https://www.circl.lu/services/passive-ssl/
 - **requirements**:
@@ -213,6 +311,24 @@ An expansion hover module to expand information about CVE id.
 
 -----
 
+#### [cytomic_orion](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/cytomic_orion.py)
+
+<img src=logos/cytomic_orion.png height=60>
+
+An expansion module to enrich attributes in MISP by quering the Cytomic Orion API
+- **features**:
+>This module takes an MD5 hash and searches for occurrences of this hash in the Cytomic Orion database. Returns observed files and machines.
+- **input**:
+>MD5, hash of the sample / malware to search for.
+- **output**:
+>MISP objects with sightings of the hash in Cytomic Orion. Includes files and machines.
+- **references**:
+>https://www.vanimpe.eu/2020/03/10/integrating-misp-and-cytomic-orion/, https://www.cytomicmodel.com/solutions/
+- **requirements**:
+>Access (license) to Cytomic Orion
+
+-----
+
 #### [dbl_spamhaus](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/dbl_spamhaus.py)
 
 <img src=logos/spamhaus.jpg height=60>
@@ -253,6 +369,22 @@ A simple DNS expansion service to resolve IP address from domain MISP attributes
 
 -----
 
+#### [docx-enrich](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/docx-enrich.py)
+
+<img src=logos/docx.png height=60>
+
+Module to extract freetext from a .docx document.
+- **features**:
+>The module reads the text contained in a .docx document. The result is passed to the freetext import parser so IoCs can be extracted out of it.
+- **input**:
+>Attachment attribute containing a .docx document.
+- **output**:
+>Text and freetext parsed from the document.
+- **requirements**:
+>docx python library
+
+-----
+
 #### [domaintools](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/domaintools.py)
 
 <img src=logos/domaintools.png height=60>
@@ -287,6 +419,22 @@ DomainTools MISP expansion module.
 >https://www.domaintools.com/
 - **requirements**:
 >Domaintools python library, A Domaintools API access (username & apikey)
+
+-----
+
+#### [eql](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/eql.py)
+
+<img src=logos/eql.png height=60>
+
+EQL query generation for a MISP attribute.
+- **features**:
+>This module adds a new attribute to a MISP event containing an EQL query for a network or file attribute.
+- **input**:
+>A filename or ip attribute.
+- **output**:
+>Attribute containing EQL for a network or file attribute.
+- **references**:
+>https://eql.readthedocs.io/en/latest/
 
 -----
 
@@ -348,6 +496,22 @@ Module to query a local copy of Maxmind's Geolite database.
 
 -----
 
+#### [greynoise](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/greynoise.py)
+
+<img src=logos/greynoise.png height=60>
+
+Module to access GreyNoise.io API
+- **features**:
+>The module takes an IP address as input and queries Greynoise for some additional information about it. The result is returned as text.
+- **input**:
+>An IP address.
+- **output**:
+>Additional information about the IP fetched from Greynoise API.
+- **references**:
+>https://greynoise.io/, https://github.com/GreyNoise-Intelligence/api.greynoise.io
+
+-----
+
 #### [hashdd](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/hashdd.py)
 
 A hover module to check hashes against hashdd.com including NSLR dataset.
@@ -359,6 +523,22 @@ A hover module to check hashes against hashdd.com including NSLR dataset.
 >Text describing the known level of the hash in the hashdd databases.
 - **references**:
 >https://hashdd.com/
+
+-----
+
+#### [hibp](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/hibp.py)
+
+<img src=logos/hibp.png height=60>
+
+Module to access haveibeenpwned.com API.
+- **features**:
+>The module takes an email address as input and queries haveibeenpwned.com API to find additional information about it. This additional information actually tells if any account using the email address has already been compromised in a data breach.
+- **input**:
+>An email address
+- **output**:
+>Additional information about the email address.
+- **references**:
+>https://haveibeenpwned.com/
 
 -----
 
@@ -386,11 +566,11 @@ Module to access intelmqs eventdb.
 
 Module to query an IP ASN history service (https://github.com/D4-project/IPASN-History).
 - **features**:
->This module takes an IP address attribute as input and queries the CIRCL IPASN service to get additional information about the input.
+>This module takes an IP address attribute as input and queries the CIRCL IPASN service. The result of the query is the latest asn related to the IP address, that is returned as a MISP object.
 - **input**:
 >An IP address MISP attribute.
 - **output**:
->Text describing additional information about the input after a query on the IPASN-history database.
+>Asn object(s) objects related to the IP address used as input.
 - **references**:
 >https://github.com/D4-project/IPASN-History
 - **requirements**:
@@ -414,6 +594,88 @@ Module to query IPRep data for IP addresses.
 
 -----
 
+#### [joesandbox_query](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/joesandbox_query.py)
+
+<img src=logos/joesandbox.png height=60>
+
+Query Joe Sandbox API with a submission url to get the json report and extract its data that is parsed and converted into MISP attributes and objects.
+
+This url can by the way come from the result of the [joesandbox_submit expansion module](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/joesandbox_submit.py).
+- **features**:
+>Module using the new format of modules able to return attributes and objects.
+>
+>The module returns the same results as the import module [joe_import](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/import_mod/joe_import.py) taking directly the json report as input.
+>
+>Even if the introspection will allow all kinds of links to call this module, obviously only the ones presenting a sample or url submission in the Joe Sandbox API will return results.
+>
+>To make it work you will need to fill the 'apikey' configuration with your Joe Sandbox API key and provide a valid link as input.
+- **input**:
+>Link of a Joe Sandbox sample or url submission.
+- **output**:
+>MISP attributes & objects parsed from the analysis report.
+- **references**:
+>https://www.joesecurity.org, https://www.joesandbox.com/
+- **requirements**:
+>jbxapi: Joe Sandbox API python3 library
+
+-----
+
+#### [joesandbox_submit](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/joesandbox_submit.py)
+
+<img src=logos/joesandbox.png height=60>
+
+A module to submit files or URLs to Joe Sandbox for an advanced analysis, and return the link of the submission.
+- **features**:
+>The module requires a Joe Sandbox API key to submit files or URL, and returns the link of the submitted analysis.
+>
+>It is then possible, when the analysis is completed, to query the Joe Sandbox API to get the data related to the analysis, using the [joesandbox_query module](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/joesandbox_query.py) directly on this submission link.
+- **input**:
+>Sample, url (or domain) to submit to Joe Sandbox for an advanced analysis.
+- **output**:
+>Link of the report generated in Joe Sandbox.
+- **references**:
+>https://www.joesecurity.org, https://www.joesandbox.com/
+- **requirements**:
+>jbxapi: Joe Sandbox API python3 library
+
+-----
+
+#### [lastline_query](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/lastline_query.py)
+
+<img src=logos/lastline.png height=60>
+
+Query Lastline with an analysis link and parse the report into MISP attributes and objects.
+The analysis link can also be retrieved from the output of the [lastline_submit](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/lastline_submit.py) expansion module.
+- **features**:
+>The module requires a Lastline Portal `username` and `password`.
+>The module uses the new format and it is able to return MISP attributes and objects.
+>The module returns the same results as the [lastline_import](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/import_mod/lastline_import.py) import module.
+- **input**:
+>Link to a Lastline analysis.
+- **output**:
+>MISP attributes and objects parsed from the analysis report.
+- **references**:
+>https://www.lastline.com
+
+-----
+
+#### [lastline_submit](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/lastline_submit.py)
+
+<img src=logos/lastline.png height=60>
+
+Module to submit a file or URL to Lastline.
+- **features**:
+>The module requires a Lastline Analysis `api_token` and `key`.
+>When the analysis is completed, it is possible to import the generated report by feeding the analysis link to the [lastline_query](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/lastline_query.py) module.
+- **input**:
+>File or URL to submit to Lastline.
+- **output**:
+>Link to the report generated by Lastline.
+- **references**:
+>https://www.lastline.com
+
+-----
+
 #### [macaddress_io](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/macaddress_io.py)
 
 <img src=logos/macaddress_io.png height=60>
@@ -434,6 +696,84 @@ MISP hover module for macaddress.io
 >https://macaddress.io/, https://github.com/CodeLineFi/maclookup-python
 - **requirements**:
 >maclookup: macaddress.io python library, An access to the macaddress.io API (apikey)
+
+-----
+
+#### [macvendors](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/macvendors.py)
+
+<img src=logos/macvendors.png height=60>
+
+Module to access Macvendors API.
+- **features**:
+>The module takes a MAC address as input and queries macvendors.com for some information about it. The API returns the name of the vendor related to the address.
+- **input**:
+>A MAC address.
+- **output**:
+>Additional information about the MAC address.
+- **references**:
+>https://macvendors.com/, https://macvendors.com/api
+
+-----
+
+#### [malwarebazaar](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/malwarebazaar.py)
+
+Query the MALWAREbazaar API to get additional information about the input hash attribute.
+- **features**:
+>The module takes a hash attribute as input and queries MALWAREbazaar's API to fetch additional data about it. The result, if the payload is known on the databases, is at least one file object describing the file the input hash is related to.
+>
+>The module is using the new format of modules able to return object since the result is one or multiple MISP object(s).
+- **input**:
+>A hash attribute (md5, sha1 or sha256).
+- **output**:
+>File object(s) related to the input attribute found on MALWAREbazaar databases.
+- **references**:
+>https://bazaar.abuse.ch/
+
+-----
+
+#### [ocr-enrich](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/ocr-enrich.py)
+
+Module to process some optical character recognition on pictures.
+- **features**:
+>The module takes an attachment attributes as input and process some optical character recognition on it. The text found is then passed to the Freetext importer to extract potential IoCs.
+- **input**:
+>A picture attachment.
+- **output**:
+>Text and freetext fetched from the input picture.
+- **requirements**:
+>cv2: The OpenCV python library.
+
+-----
+
+#### [ods-enrich](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/ods-enrich.py)
+
+<img src=logos/ods.png height=60>
+
+Module to extract freetext from a .ods document.
+- **features**:
+>The module reads the text contained in a .ods document. The result is passed to the freetext import parser so IoCs can be extracted out of it.
+- **input**:
+>Attachment attribute containing a .ods document.
+- **output**:
+>Text and freetext parsed from the document.
+- **requirements**:
+>ezodf: Python package to create/manipulate OpenDocumentFormat files., pandas_ods_reader: Python library to read in ODS files.
+
+-----
+
+#### [odt-enrich](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/odt-enrich.py)
+
+<img src=logos/odt.png height=60>
+
+Module to extract freetext from a .odt document.
+- **features**:
+>The module reads the text contained in a .odt document. The result is passed to the freetext import parser so IoCs can be extracted out of it.
+- **input**:
+>Attachment attribute containing a .odt document.
+- **output**:
+>Text and freetext parsed from the document.
+- **requirements**:
+>ODT reader python library.
 
 -----
 
@@ -557,6 +897,52 @@ Module to get information from AlienVault OTX.
 >https://www.passivetotal.org/register
 - **requirements**:
 >Passivetotal python library, An access to the PassiveTotal API (apikey)
+
+-----
+
+#### [pdf-enrich](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/pdf-enrich.py)
+
+<img src=logos/pdf.jpg height=60>
+
+Module to extract freetext from a PDF document.
+- **features**:
+>The module reads the text contained in a PDF document. The result is passed to the freetext import parser so IoCs can be extracted out of it.
+- **input**:
+>Attachment attribute containing a PDF document.
+- **output**:
+>Text and freetext parsed from the document.
+- **requirements**:
+>pdftotext: Python library to extract text from PDF.
+
+-----
+
+#### [pptx-enrich](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/pptx-enrich.py)
+
+<img src=logos/pptx.png height=60>
+
+Module to extract freetext from a .pptx document.
+- **features**:
+>The module reads the text contained in a .pptx document. The result is passed to the freetext import parser so IoCs can be extracted out of it.
+- **input**:
+>Attachment attribute containing a .pptx document.
+- **output**:
+>Text and freetext parsed from the document.
+- **requirements**:
+>pptx: Python library to read PowerPoint files.
+
+-----
+
+#### [qrcode](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/qrcode.py)
+
+Module to decode QR codes.
+- **features**:
+>The module reads the QR code and returns the related address, which can be an URL or a bitcoin address.
+- **input**:
+>A QR code stored as attachment attribute.
+- **output**:
+>The URL or bitcoin address the QR code is pointing to.
+- **requirements**:
+>cv2: The OpenCV python library., pyzbar: Python library to read QR codes.
 
 -----
 
@@ -798,6 +1184,53 @@ Module to get information from ThreatMiner.
 
 -----
 
+#### [trustar_enrich](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/trustar_enrich.py)
+
+<img src=logos/trustar.png height=60>
+
+Module to get enrich indicators with TruSTAR.
+- **features**:
+>This module enriches MISP attributes with scoring and metadata from TruSTAR.
+>
+>The TruSTAR indicator summary is appended to the attributes along with links to any associated reports.
+- **input**:
+>Any of the following MISP attributes:
+>- btc
+>- domain
+>- email-src
+>- filename
+>- hostname
+>- ip-src
+>- ip-dst
+>- md5
+>- sha1
+>- sha256
+>- url
+- **output**:
+>MISP attributes enriched with indicator summary data from the TruSTAR API. Data includes a severity level score and additional source and scoring info.
+- **references**:
+>https://docs.trustar.co/api/v13/indicators/get_indicator_summaries.html
+
+-----
+
+#### [urlhaus](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/urlhaus.py)
+
+<img src=logos/urlhaus.png height=60>
+
+Query of the URLhaus API to get additional information about the input attribute.
+- **features**:
+>Module using the new format of modules able to return attributes and objects.
+>
+>The module takes one of the attribute type specified as input, and query the URLhaus API with it. If any result is returned by the API, attributes and objects are created accordingly.
+- **input**:
+>A domain, hostname, url, ip, md5 or sha256 attribute.
+- **output**:
+>MISP attributes & objects fetched from the result of the URLhaus API query.
+- **references**:
+>https://urlhaus.abuse.ch/
+
+-----
+
 #### [urlscan](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/urlscan.py)
 
 <img src=logos/urlscan.jpg height=60>
@@ -822,21 +1255,45 @@ An expansion module to query urlscan.io.
 
 <img src=logos/virustotal.png height=60>
 
-Module to get information from virustotal.
+Module to get advanced information from virustotal.
 - **features**:
->This module takes a MISP attribute as input and queries the VirusTotal API with it, in order to get additional data on the  input attribute.
+>New format of modules able to return attributes and objects.
 >
->Multiple recursive requests on the API can then be processed on some attributes found in the first request. A limit can be set to restrict the number of values to query again, and at the same time the number of request submitted to the API.
+>A module to take a MISP attribute as input and query the VirusTotal API to get additional data about it.
 >
->This limit is important because the default user VirusTotal apikey only allows to process a certain nunmber of queries per minute. As a consequence it is recommended to have a larger number of requests or a private apikey.
+>Compared to the [standard VirusTotal expansion module](https://github.com/MISP/misp-modules/blob/master/misp_modules/modules/expansion/virustotal_public.py), this module is made for advanced parsing of VirusTotal report, with a recursive analysis of the elements found after the first request.
 >
->Data is then mapped into MISP attributes.
+>Thus, it requires a higher request rate limit to avoid the API to return a 204 error (Request rate limit exceeded), and the data parsed from the different requests are returned as MISP attributes and objects, with the corresponding relations between each one of them.
 - **input**:
 >A domain, hash (md5, sha1, sha256 or sha512), hostname or IP address attribute.
 - **output**:
->MISP attributes mapped from the rersult of the query on VirusTotal API.
+>MISP attributes and objects resulting from the parsing of the VirusTotal report concerning the input attribute.
 - **references**:
->https://www.virustotal.com/
+>https://www.virustotal.com/, https://developers.virustotal.com/reference
+- **requirements**:
+>An access to the VirusTotal API (apikey), with a high request rate limit.
+
+-----
+
+#### [virustotal_public](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/virustotal_public.py)
+
+<img src=logos/virustotal.png height=60>
+
+Module to get information from VirusTotal.
+- **features**:
+>New format of modules able to return attributes and objects.
+>
+>A module to take a MISP attribute as input and query the VirusTotal API to get additional data about it.
+>
+>Compared to the [more advanced VirusTotal expansion module](https://github.com/MISP/misp-modules/blob/master/misp_modules/modules/expansion/virustotal.py), this module is made for VirusTotal users who have a low request rate limit.
+>
+>Thus, it only queries the API once and returns the results that is parsed into MISP attributes and objects.
+- **input**:
+>A domain, hostname, ip, url or hash (md5, sha1, sha256 or sha512) attribute.
+- **output**:
+>MISP attributes and objects resulting from the parsing of the VirusTotal report concerning the input attribute.
+- **references**:
+>https://www.virustotal.com, https://developers.virustotal.com/reference
 - **requirements**:
 >An access to the VirusTotal API (apikey)
 
@@ -965,6 +1422,22 @@ An expansion module for IBM X-Force Exchange.
 
 -----
 
+#### [xlsx-enrich](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/xlsx-enrich.py)
+
+<img src=logos/xlsx.png height=60>
+
+Module to extract freetext from a .xlsx document.
+- **features**:
+>The module reads the text contained in a .xlsx document. The result is passed to the freetext import parser so IoCs can be extracted out of it.
+- **input**:
+>Attachment attribute containing a .xlsx document.
+- **output**:
+>Text and freetext parsed from the document.
+- **requirements**:
+>pandas: Python library to perform data analysis, time series and statistics.
+
+-----
+
 #### [yara_query](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/yara_query.py)
 
 <img src=logos/yara.png height=60>
@@ -1019,6 +1492,22 @@ Module to export a MISP event in CEF format.
 
 -----
 
+#### [cisco_firesight_manager_ACL_rule_export](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/export_mod/cisco_firesight_manager_ACL_rule_export.py)
+
+<img src=logos/cisco.png height=60>
+
+Module to export malicious network activity attributes to Cisco fireSIGHT manager block rules.
+- **features**:
+>The module goes through the attributes to find all the network activity ones in order to create block rules for the Cisco fireSIGHT manager.
+- **input**:
+>Network activity attributes (IPs, URLs).
+- **output**:
+>Cisco fireSIGHT manager block rules.
+- **requirements**:
+>Firesight manager console credentials
+
+-----
+
 #### [goamlexport](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/export_mod/goamlexport.py)
 
 <img src=logos/goAML.jpg height=60>
@@ -1063,6 +1552,22 @@ Lite export of a MISP event.
 >MISP Event attributes
 - **output**:
 >Lite MISP Event
+
+-----
+
+#### [mass_eql_export](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/export_mod/mass_eql_export.py)
+
+<img src=logos/eql.png height=60>
+
+Mass EQL query export for a MISP event.
+- **features**:
+>This module produces EQL queries for all relevant attributes in a MISP event.
+- **input**:
+>MISP Event attributes
+- **output**:
+>Text file containing one or more EQL queries
+- **references**:
+>https://eql.readthedocs.io/en/latest/
 
 -----
 
@@ -1161,6 +1666,26 @@ Module to export a structured CSV file for uploading to ThreatConnect.
 
 -----
 
+#### [vt_graph](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/export_mod/vt_graph.py)
+
+<img src=logos/virustotal.png height=60>
+
+This module is used to create a VirusTotal Graph from a MISP event.
+- **features**:
+>The module takes the MISP event as input and queries the VirusTotal Graph API to create a new graph out of the event.
+>
+>Once the graph is ready, we get the url of it, which is returned so we can view it on VirusTotal.
+- **input**:
+>A MISP event.
+- **output**:
+>Link of the VirusTotal Graph created for the event.
+- **references**:
+>https://www.virustotal.com/gui/graph-overview
+- **requirements**:
+>vt_graph_api, the python library to query the VirusTotal graph API
+
+-----
+
 ## Import Modules
 
 #### [csvimport](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/import_mod/csvimport.py)
@@ -1168,11 +1693,10 @@ Module to export a structured CSV file for uploading to ThreatConnect.
 Module to import MISP attributes from a csv file.
 - **features**:
 >In order to parse data from a csv file, a header is required to let the module know which column is matching with known attribute fields / MISP types.
->This header is part of the configuration of the module and should be filled out in MISP plugin settings, each field separated by COMMAS. Fields that do not match with any type known in MISP can be ignored in import, using a space or simply nothing between two separators (example: 'ip-src, , comment, ').
->There is also one type that is confused and can be either a MISP attribute type or an attribute field: 'comment'. In this case, using 'attrComment' specifies that the attribute field 'comment' should be considered, otherwise it will be considered as the MISP attribute type.
 >
->For each MISP attribute type, an attribute is created.
->Attribute fields that are imported are the following: value, type, category, to-ids, distribution, comment, tag.
+>This header either comes from the csv file itself or is part of the configuration of the module and should be filled out in MISP plugin settings, each field separated by COMMAS. Fields that do not match with any type known in MISP or are not MISP attribute fields should be ignored in import, using a space or simply nothing between two separators (example: 'ip-src, , comment, ').
+>
+>If the csv file already contains a header that does not start by a '#', you should tick the checkbox 'has_header' to avoid importing it and have potential issues. You can also redefine the header even if it is already contained in the file, by following the rules for headers explained earlier. One reason why you would redefine a header is for instance when you want to skip some fields, or some fields are not valid types.
 - **input**:
 >CSV format file.
 - **output**:
@@ -1228,6 +1752,44 @@ Module to import MISP objects about financial transactions from GoAML files.
 >http://goaml.unodc.org/
 - **requirements**:
 >PyMISP
+
+-----
+
+#### [joe_import](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/import_mod/joe_import.py)
+
+<img src=logos/joesandbox.png height=60>
+
+A module to import data from a Joe Sandbox analysis json report.
+- **features**:
+>Module using the new format of modules able to return attributes and objects.
+>
+>The module returns the same results as the expansion module [joesandbox_query](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/joesandbox_query.py) using the submission link of the analysis to get the json report.
+>
+>
+- **input**:
+>Json report of a Joe Sandbox analysis.
+- **output**:
+>MISP attributes & objects parsed from the analysis report.
+- **references**:
+>https://www.joesecurity.org, https://www.joesandbox.com/
+
+-----
+
+#### [lastline_import](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/import_mod/lastline_import.py)
+
+<img src=logos/lastline.png height=60>
+
+Module to import and parse reports from Lastline analysis links.
+- **features**:
+>The module requires a Lastline Portal `username` and `password`.
+>The module uses the new format and it is able to return MISP attributes and objects.
+>The module returns the same results as the [lastline_query](https://github.com/MISP/misp-modules/tree/master/misp_modules/modules/expansion/lastline_query.py) expansion module.
+- **input**:
+>Link to a Lastline analysis.
+- **output**:
+>MISP attributes and objects parsed from the analysis report.
+- **references**:
+>https://www.lastline.com
 
 -----
 
